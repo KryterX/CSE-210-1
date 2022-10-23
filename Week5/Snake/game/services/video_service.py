@@ -1,4 +1,4 @@
-import pyray
+import pygame
 import constants
 
 
@@ -17,14 +17,14 @@ class VideoService:
 
     def close_window(self):
         """Closes the window and releases all computing resources."""
-        pyray.close_window()
+        pygame.close_window()
 
     def clear_buffer(self):
         """Clears the buffer in preparation for the next rendering. This method should be called at
         the beginning of the game's output phase.
         """
-        pyray.begin_drawing()
-        pyray.clear_background(pyray.BLACK)
+        pygame.begin_drawing()
+        pygame.clear_background(pygame.BLACK)
         if self._debug == True:
             self._draw_grid()
     
@@ -41,11 +41,11 @@ class VideoService:
         color = actor.get_color().to_tuple()
 
         if centered:
-            width = pyray.measure_text(text, font_size)
+            width = pygame.measure_text(text, font_size)
             offset = int(width / 2)
             x -= offset
             
-        pyray.draw_text(text, x, y, font_size, color)
+        pygame.draw_text(text, x, y, font_size, color)
         
     def draw_actors(self, actors, centered=False):
         """Draws the text for the given list of actors on the screen.
@@ -60,7 +60,7 @@ class VideoService:
         """Copies the buffer contents to the screen. This method should be called at the end of
         the game's output phase.
         """ 
-        pyray.end_drawing()
+        pygame.end_drawing()
 
     def is_window_open(self):
         """Whether or not the window was closed by the user.
@@ -68,7 +68,7 @@ class VideoService:
         Returns:
             bool: True if the window is closing; false if otherwise.
         """
-        return not pyray.window_should_close()
+        return not pygame.window_should_close()
 
     def open_window(self):
         """Opens a new window with the provided title.
@@ -76,17 +76,17 @@ class VideoService:
         Args:
             title (string): The title of the window.
         """
-        pyray.init_window(constants.MAX_X, constants.MAX_Y, constants.CAPTION)
-        pyray.set_target_fps(constants.FRAME_RATE)
+        pygame.init_window(constants.MAX_X, constants.MAX_Y, constants.CAPTION)
+        pygame.set_target_fps(constants.FRAME_RATE)
 
     def _draw_grid(self):
         """Draws a grid on the screen."""
         for y in range(0, constants.MAX_Y, constants.CELL_SIZE):
-            pyray.draw_line(0, y, constants.MAX_X, y, pyray.GRAY)
+            pygame.draw_line(0, y, constants.MAX_X, y, pygame.GRAY)
             
         for x in range(0, constants.MAX_X, constants.CELL_SIZE):
-            pyray.draw_line(x, 0, x, constants.MAX_Y, pyray.GRAY)
+            pygame.draw_line(x, 0, x, constants.MAX_Y, pygame.GRAY)
     
     def _get_x_offset(self, text, font_size):
-        width = pyray.measure_text(text, font_size)
+        width = pygame.measure_text(text, font_size)
         return int(width / 2)
